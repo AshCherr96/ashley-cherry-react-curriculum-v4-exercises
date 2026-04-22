@@ -9,12 +9,12 @@
 */
 
 import { useState } from 'react';
+
 export default function BugMutatedState() {
-  let [count, setCount] = useState(0);
+  const [count, setCount] = useState(0);
 
   function handleAdd() {
-    count++;
-    setCount(count);
+    setCount(count + 1);
   }
 
   return (
@@ -26,4 +26,4 @@ export default function BugMutatedState() {
 }
 
 // Explanation:
-// (Write your explanation here)
+// The bug was caused by direct state mutation using count++. In React, state should be treated as immutable. By incrementing the variable directly before calling the setter, the component wasn't properly signaling to React that a change occurred in a way it could track. I fixed this by passing the updated value directly into the setCount function.
