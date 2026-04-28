@@ -7,9 +7,12 @@ export default function BugStrictMode() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    setInterval(() => {
-      setCount((c) => c + 1);
+    const intervalId = setInterval(() => {
+      setCount((prev) => prev + 1);
     }, 1000);
+
+    // FIX
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -20,4 +23,4 @@ export default function BugStrictMode() {
   );
 }
 
-// Write your explanation of how StrictMode helps us catch this bug
+// Added a cleanup function to prevent memory leaks and double-timers in StrictMode. The cleanup function clears the interval when the component unmounts or before the next effect runs, ensuring that only one interval is active at a time.
