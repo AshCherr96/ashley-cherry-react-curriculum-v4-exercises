@@ -12,7 +12,7 @@ function FetchOnClick() {
     setPost(null); // Clear previous post while loading new one
 
     try {
-      // Fetching post ID 1
+      // Fetching post ID 1 for demonstration; this could be made dynamic
       const data = await getSinglePost(1);
       setPost(data);
     } catch (err) {
