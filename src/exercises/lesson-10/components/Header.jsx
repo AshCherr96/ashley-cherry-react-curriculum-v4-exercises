@@ -1,38 +1,68 @@
-import { Link, NavLink } from 'react-router-dom';
+import React from 'react';
+import { NavLink } from 'react-router';
 
-export default function Header({ user }) {
-  // Active link styling helper
-  const navLinkStyles = ({ isActive }) => ({
-    fontWeight: isActive ? 700 : 400,
-    textDecoration: isActive ? 'underline' : 'none',
-    padding: '2px 6px',
-    borderRadius: 6,
-    backgroundColor: isActive ? '#eee' : 'transparent',
-  });
+function Header({ isLoggedIn, setIsLoggedIn }) {
+  // Dynamic styling function provided by NavLink's style callback
+  const navLinkStyle = ({ isActive }) => {
+    return {
+      fontWeight: isActive ? 'bold' : 'normal',
+      color: isActive ? '#007bff' : '#333',
+      textDecoration: isActive ? 'underline' : 'none',
+      padding: '0.5rem',
+    };
+  };
 
   return (
-    <header style={{ padding: 12, borderBottom: '1px solid #ddd' }}>
-      <h1 style={{ margin: 0 }}>Lesson 10 Routing Demo</h1>
+    <header
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '1rem 2rem',
+        borderBottom: '2px solid #eaeaea',
+        backgroundColor: '#fff',
+      }}
+    >
+      <div className="logo">
+        <h2 style={{ margin: 0 }}>Routing Demo</h2>
+      </div>
 
-      <nav style={{ display: 'flex', gap: 12, marginTop: 8 }}>
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Web/API/History_API"
-          target="_blank"
-          rel="noreferrer"
-        >
-          History API (MDN)
-        </a>
+      {/* Internal Navigation Menu using NavLink */}
+      <nav style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+        <NavLink to="/" style={navLinkStyle}>
+          Home
+        </NavLink>
+
+        <NavLink to="/checkout" style={navLinkStyle}>
+          Checkout
+        </NavLink>
+
+        {/* Only show the Account link when logged in */}
+        {isLoggedIn && (
+          <NavLink to="/account" style={navLinkStyle}>
+            Account
+          </NavLink>
+        )}
       </nav>
 
-      <div style={{ marginTop: 8 }}>
-        {user.isLoggedIn ? (
-          <span>
-            Logged in as <strong>{user.firstName}</strong>
-          </span>
-        ) : (
-          <span>Not logged in</span>
-        )}
+      {/* Simple toggle login button to control mock auth state */}
+      <div className="auth-controls">
+        <button
+          onClick={() => setIsLoggedIn(!isLoggedIn)}
+          style={{
+            cursor: 'pointer',
+            padding: '0.5rem 1rem',
+            backgroundColor: isLoggedIn ? '#dc3545' : '#28a745',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+          }}
+        >
+          {isLoggedIn ? 'Log Out' : 'Log In'}
+        </button>
       </div>
     </header>
   );
 }
+
+export default Header;
